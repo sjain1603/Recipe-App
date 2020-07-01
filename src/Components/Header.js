@@ -13,7 +13,7 @@ class Header extends Component{
             <Navbar dark expand="md">
                 <div className="container">
                     <NavbarBrand className="mr-10" href="/">
-                        <img src="../logo.svg" height="60" width="80" alt="Recipe App" />
+                        <img src="logo192.png" height="30%" width="30%" alt="Recipe App" />
                     </NavbarBrand>
                     <Nav navbar>
                         <NavItem className="mr-10">

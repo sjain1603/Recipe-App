@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import Search from './SearchBar/SearchComponent';
 
 class Main extends Component {
 
@@ -7,6 +8,7 @@ class Main extends Component {
         return (
             <div>
                 <Header />
+                <Search />
             </div>
         );
     }
