@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Search.scss';
 import axios from 'axios';
+import RenderList from '../RenderList';
 
 class Search extends Component{
     constructor(props){
@@ -17,29 +18,28 @@ class Search extends Component{
         this.cancel = '';
     }
 
-    fetchFoodSearch = ( query ) => {
+    fetchSearch = ( query ) => {
         var encodedQuery = query.replace(/ /g, '%20')
-        const searchUrl = `/api/food-database/v2/parser?ingr=${encodedQuery}&app_id=a58bfb02&app_key=11eb9e8426423c4875ebf3bcbc8b5598`
-        
+        const searchUrlFood = `/api/food-database/v2/parser?ingr=${encodedQuery}&app_id=a58bfb02&app_key=11eb9e8426423c4875ebf3bcbc8b5598`
+        const searchUrlRecipe = `/search?q=${encodedQuery}&app_id=1b3918e6&app_key=775943135184647352497ef27fdeb1bd`;
         if(this.cancel) {
             this.cancel.cancel();
         }
 
         this.cancel = axios.CancelToken.source();
 
-        axios.get( searchUrl, {
+        axios.get( searchUrlFood, {
             cancelToken: this.cancel.token
         })
         .then( res => {
-            console.log(res);
-            {/*const resultNotFoundMsg = !res.data.hints.length
+            const resultNotFoundMsg = !res.data.hints.length
                                     ? 'There are no more Search Results. Pls try a new search'
                                     : '';
             this.setState({
                 foodResults: res.data.hints,
                 foodMessage: resultNotFoundMsg,
                 foodLoading: false,
-            })*/}
+            })
         })
         .catch( error => {
             if(axios.isCancel(error) || error) {
@@ -49,23 +49,9 @@ class Search extends Component{
                 })
             }
         })
-    }
 
-    fetchRecipeSearch = ( query ) => {
-        var encodedQuery = query.replace(/ /g, '%20');
-        const searchUrl = `/search?q=${encodedQuery}&app_id=1b3918e6&app_key=775943135184647352497ef27fdeb1bd`;
-        
-        if(this.cancel) {
-            this.cancel.cancel();
-        }
-
-        this.cancel = axios.CancelToken.source();
-
-        axios.get( searchUrl, {
-            cancelToken: this.cancel.token,
-            Headers: {
-                "Access-Control-Allow-Origin": "*"
-            }
+        axios.get( searchUrlRecipe, {
+            cancelToken: this.cancel.token
         })
         .then( res => {
             const resultNotFoundMsg = !res.data.hits.length
@@ -87,11 +73,6 @@ class Search extends Component{
         })
     }
 
-    fetchSearch = (query) => {
-        this.fetchFoodSearch( query );
-        this.fetchRecipeSearch( query );
-    }
-
 
     handleOnInputChange = (event) => {
         const query = event.target.value;
@@ -105,7 +86,7 @@ class Search extends Component{
             this.fetchSearch(query);
         })
     }
-
+    
     render() {
         const { query } = this.state;
         return (
@@ -122,6 +103,7 @@ class Search extends Component{
                         />
                         <i className="fa fa-search search-icon" aria-hidden="true" />
                     </label>
+                    <RenderList food={this.state.foodResults} recipe={this.state.recipeResults} />
                 </div>
             </div>
         );
