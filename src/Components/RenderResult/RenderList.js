@@ -39,28 +39,21 @@ class RenderList extends Component{
         );
     }
 
-    computeRecipeLabel = (nutrients) => {
-        var ratio = nutrients.PROCNT.quantity / (nutrients.PROCNT.quantity + nutrients.CHOCDF.quantity + nutrients.FAT.quantity)
-        var label1 = 'Regular';
-        var label2 = '';
-        if(ratio > 0.15) label1 = 'High Protien';
-        if (ratio < 0.5) label2 = 'High Carb';
-        if(ratio <= 0.15 && ratio >= 0.12){
-            label1 = 'Balanced';
-        }
-
-        if(label1 && label2) return (
-            <>
-            {label1}
-            <br />
-            {label2}
-            </>
-        );
-        else return (
-            <>
-            {label1}
-            </>
-        );
+    computeRecipeLabel = (recipeResults) => {
+        return recipeResults.map(recipe => {
+            var ratio = recipe.recipe.totalNutrients.PROCNT.quantity / (recipe.recipe.totalNutrients.PROCNT.quantity 
+                + recipe.recipe.totalNutrients.CHOCDF.quantity + recipe.recipe.totalNutrients.FAT.quantity)
+    
+            recipe.recipe.dietLabel = 'Regular';
+            
+            if(ratio > 0.15) {
+                recipe.recipe.dietLabel = 'High Protien'
+            }
+            if (ratio < 0.5) recipe.recipe.dietLabel = 'High Carb';
+            if(ratio <= 0.15 && ratio >= 0.12){
+                recipe.recipe.dietLabel =  'Balanced'
+            }
+        })
     }
 
     displayNutrients = (nutrients, selector) => {
@@ -104,8 +97,8 @@ class RenderList extends Component{
                         <tbody>
                             { foodResults.map( (dish, key) => {
                                 return (
-                                    <tr> 
-                                        <td id={key}>
+                                    <tr key={key}> 
+                                        <td>
                                             <img src={dish.food.image ? dish.food.image : './food.png'}
                                                 alt={dish.food.label} />
                                         </td>
@@ -125,9 +118,31 @@ class RenderList extends Component{
     }
 
     renderRecipe = () => {
-        const { recipeResults } = this.props;
+        const { recipeResults }  = this.props;
 
         if( recipeResults && recipeResults.length && Object.keys(recipeResults).length ){
+            this.computeRecipeLabel(recipeResults);
+            var recipes = recipeResults;
+            if(this.state.highProtien){
+                recipes = recipeResults.filter(recipe => 
+                    recipe.recipe.dietLabel === 'High Protien'
+                )
+            }
+            else if(this.state.highCarb){
+                recipes = recipeResults.filter(recipe => 
+                    recipe.recipe.dietLabel === 'High Carb'
+                )
+            }
+            if(this.state.balanced){
+                recipes = recipeResults.filter(recipe => 
+                    recipe.recipe.dietLabel === 'Balanced'
+                )
+            }
+            if(this.state.regular){
+                recipes = recipeResults.filter(recipe => 
+                    recipe.recipe.dietLabel === 'Regular'
+                )
+            }
             return (
                 <div className="recipe-container list">
                      <Table hover>
@@ -142,7 +157,7 @@ class RenderList extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            { recipeResults.map( (recipe, key) => {
+                            { recipes.map( (recipe, key) => {
                                 return (
                                     <tr> 
                                         <td id={key}>
@@ -150,7 +165,7 @@ class RenderList extends Component{
                                                 alt={recipe.recipe.label} />
                                         </td>
                                         <td>{recipe.recipe.label}</td>
-                                        <td>{this.computeRecipeLabel(recipe.recipe.totalNutrients)}</td>
+                                        <td>{recipe.recipe.dietLabel}</td>
                                         <td>{recipe.recipe.yield}</td>
                                         <td>{recipe.recipe.calories.toFixed(2)}</td>
                                         <td>{this.displayNutrients(recipe.recipe.totalNutrients, 'recipe')}</td>
@@ -174,19 +189,35 @@ class RenderList extends Component{
                     <div className="filter">
                         <b>Diet Label Filter:</b>
                         <label>
-                            <Input type='checkbox' id="High Protien" name="High Protien" />
+                            <Input type='checkbox' id="High Protien" name="High Protien"
+                                onClick={() => {
+                                    this.setState({highProtien: !this.state.highProtien});
+                                }}
+                            />
                             High Protien
                         </label>
                         <label>
-                            <Input type='checkbox' id="High Protien" name="High Protien" />
+                            <Input type='checkbox' id="High Carb" name="High Carb" 
+                                onClick={() => {
+                                    this.setState({highCarb: !this.state.highCarb});
+                                }}
+                            />
                             High Carb
                         </label>
                         <label>
-                            <Input type='checkbox' id="High Protien" name="High Protien" />
+                            <Input type='checkbox' id="Regular" name="Regular" 
+                                onClick={() => {
+                                    this.setState({regular: !this.state.regular});
+                                }}
+                            />
                             Regular
                         </label>
                         <label>
-                            <Input type='checkbox' id="High Protien" name="High Protien" />
+                            <Input type='checkbox' id="Balanced" name="Balanced" 
+                                onClick={() => {
+                                    this.setState({balanced: !this.state.balanced});
+                                }}
+                            />
                             Balanced
                         </label>
                     </div>
