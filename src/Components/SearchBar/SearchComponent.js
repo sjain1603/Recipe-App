@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Search.scss';
 import axios from 'axios';
-import RenderList from '../RenderList';
+import RenderList from '../RenderResult/RenderList';
 import Loader from '../loader.gif';
 
 class Search extends Component{
@@ -92,7 +92,7 @@ class Search extends Component{
         }
     }
 
-    renderFood = () => {
+    renderResults = () => {
         const {foodResults, recipeResults} = this.state;
         console.log(foodResults);
         return (
@@ -123,7 +123,7 @@ class Search extends Component{
                     <img src={Loader} className={`search-loading ${(foodLoading && recipeLoading) ? 'show' : 'hide'}`}
                         alt="Loading..."
                     />
-                    {this.renderFood()}
+                    {this.renderResults()}
                 </div>
             </div>
         );
