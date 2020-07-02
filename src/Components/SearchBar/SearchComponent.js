@@ -94,7 +94,6 @@ class Search extends Component{
 
     renderResults = () => {
         const {foodResults, recipeResults} = this.state;
-        console.log(foodResults);
         return (
             <RenderList foodResults={foodResults}  recipeResults={recipeResults} />
         );

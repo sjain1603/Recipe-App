@@ -65,7 +65,6 @@ class RenderList extends Component{
 
     renderFood = () => { 
         const { foodResults } = this.props;
-        console.log(foodResults);
         if( foodResults && foodResults.length && Object.keys(foodResults).length ){
             return (
                 <div className="food-container list">
@@ -80,10 +79,10 @@ class RenderList extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            { foodResults.map( dish => {
+                            { foodResults.map( (dish, key) => {
                                 return (
                                     <tr> 
-                                        <td>
+                                        <td id={key}>
                                             <img src={dish.food.image ? dish.food.image : './food.png'}
                                                 alt={dish.food.label} />
                                         </td>
@@ -103,7 +102,6 @@ class RenderList extends Component{
 
     renderRecipe = () => {
         const { recipeResults } = this.props;
-        console.log(recipeResults)
 
         if( recipeResults && recipeResults.length && Object.keys(recipeResults).length ){
             return (
@@ -119,10 +117,10 @@ class RenderList extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            { recipeResults.map( recipe => {
+                            { recipeResults.map( (recipe, key) => {
                                 return (
                                     <tr> 
-                                        <td>
+                                        <td id={key}>
                                             <img src={recipe.recipe.image ? recipe.recipe.image : './food.png'}
                                                 alt={recipe.recipe.label} />
                                         </td>
