@@ -101,7 +101,7 @@ class Search extends Component{
     }
     
     render() {
-        const { query, foodLoading, recipeLoading, foodMessage, recipeMessage } = this.state;
+        const { query, foodLoading, recipeLoading } = this.state;
         return (
             <div className="search">
                 <div className="container">

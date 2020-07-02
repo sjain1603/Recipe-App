@@ -98,7 +98,7 @@ class RenderList extends Component{
                             { foodResults.map( dish => {
                                 return (
                                     <tr> 
-                                        <td scope="row">
+                                        <td>
                                             <img src={dish.food.image ? dish.food.image : './food.png'}
                                                 alt={dish.food.label} />
                                         </td>
@@ -137,7 +137,7 @@ class RenderList extends Component{
                             { recipeResults.map( recipe => {
                                 return (
                                     <tr> 
-                                        <td scope="row">
+                                        <td>
                                             <img src={recipe.recipe.image ? recipe.recipe.image : './food.png'}
                                                 alt={recipe.recipe.label} />
                                         </td>
