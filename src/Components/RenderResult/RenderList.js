@@ -53,6 +53,7 @@ class RenderList extends Component{
             if(ratio <= 0.15 && ratio >= 0.12){
                 recipe.recipe.dietLabel =  'Balanced'
             }
+            return recipe.recipe.dietLabel
         })
     }
 
