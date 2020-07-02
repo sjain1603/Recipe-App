@@ -63,6 +63,28 @@ class RenderList extends Component{
         );
     }
 
+    displayNutrients = (nutrients, selector) => {
+        if(selector === 'food'){
+            return (
+                <div>
+                    Protien: <b style={{paddingLeft:'10px'}}>{nutrients.PROCNT.toFixed(2)}</b>
+                    <br/>
+                    Fat: <b style={{paddingLeft:'10px'}}>{nutrients.FAT.toFixed(2)}</b>
+                    <br/>
+                    Carbs: <b style={{paddingLeft:'10px'}}>{nutrients.CHOCDF.toFixed(2)}</b>
+                </div>
+            );
+        }else return (
+            <div>
+                Protien: <b style={{paddingLeft:'10px'}}>{nutrients.PROCNT.quantity.toFixed(2)}</b>
+                <br/>
+                Fat: <b style={{paddingLeft:'10px'}}>{nutrients.FAT.quantity.toFixed(2)}</b>
+                <br/>
+                Carbs: <b style={{paddingLeft:'10px'}}>{nutrients.CHOCDF.quantity.toFixed(2)}</b>
+            </div>
+        );
+    }
+
     renderFood = () => { 
         const { foodResults } = this.props;
         if( foodResults && foodResults.length && Object.keys(foodResults).length ){
@@ -76,6 +98,7 @@ class RenderList extends Component{
                                 <th>Category</th>
                                 <th>Diet Label</th>
                                 <th>Energy (kcal)</th>
+                                <th>Nutrients</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,7 +112,8 @@ class RenderList extends Component{
                                         <td>{dish.food.label}</td>
                                         <td>{dish.food.category}</td>
                                         <td>{this.computeFoodLabel(dish.food.nutrients)}</td>
-                                        <td>{dish.food.nutrients.ENERC_KCAL}</td>
+                                        <td>{dish.food.nutrients.ENERC_KCAL.toFixed(2)}</td>
+                                        <td>{this.displayNutrients(dish.food.nutrients, 'food')}</td>
                                     </tr> 
                                 );
                             })}
@@ -114,6 +138,7 @@ class RenderList extends Component{
                                 <th>Diet Label</th>
                                 <th>Servings</th>
                                 <th>Calories (kcal)</th>
+                                <th>Nutrients</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,7 +152,8 @@ class RenderList extends Component{
                                         <td>{recipe.recipe.label}</td>
                                         <td>{this.computeRecipeLabel(recipe.recipe.totalNutrients)}</td>
                                         <td>{recipe.recipe.yield}</td>
-                                        <td>{recipe.recipe.calories}</td>
+                                        <td>{recipe.recipe.calories.toFixed(2)}</td>
+                                        <td>{this.displayNutrients(recipe.recipe.totalNutrients, 'recipe')}</td>
                                     </tr> 
                                 );
                             })}
