@@ -9,6 +9,58 @@ class RenderList extends Component{
         this.renderFood = this.renderFood.bind(this);
     }
 
+    computeFoodLabel = ( nutrients ) => {
+        var ratio = nutrients.PROCNT / (nutrients.PROCNT + nutrients.CHOCDF + nutrients.FAT)
+        var label1 = 'Regular';
+        var label2 = '';
+        if(ratio > 0.15) label1 = 'High Protien';
+        if (ratio < 0.5) label2 = 'High Carb';
+        if(ratio <= 0.15 && ratio >= 0.12){
+            label1 = 'Balanced';
+            label2 = '';
+        }
+        if(label1 == 'Regular') label2='';
+
+        if(label1 && label2) return (
+            <>
+            {label1}
+            <br />
+            {label2}
+            </>
+        );
+        else return (
+            <>
+            {label1}
+            </>
+        );
+    }
+
+    computeRecipeLabel = (nutrients) => {
+        var ratio = nutrients.PROCNT.quantity / (nutrients.PROCNT.quantity + nutrients.CHOCDF.quantity + nutrients.FAT.quantity)
+        var label1 = 'Regular';
+        var label2 = '';
+        if(ratio > 0.15) label1 = 'High Protien';
+        if (ratio < 0.5) label2 = 'High Carb';
+        if(ratio <= 0.15 && ratio >= 0.12){
+            label1 = 'Balanced';
+            label2 = '';
+        }
+        if(label1 == 'Regular') label2='';
+
+        if(label1 && label2) return (
+            <>
+            {label1}
+            <br />
+            {label2}
+            </>
+        );
+        else return (
+            <>
+            {label1}
+            </>
+        );
+    }
+
     renderFood = () => { 
         const { foodResults } = this.props;
         console.log(foodResults);
@@ -19,8 +71,9 @@ class RenderList extends Component{
                         <thead>
                             <tr>
                                 <th>Image</th>
-                                <th>Label</th>
+                                <th>Food</th>
                                 <th>Category</th>
+                                <th>Diet Label</th>
                                 <th>Energy (kcal)</th>
                             </tr>
                         </thead>
@@ -34,6 +87,7 @@ class RenderList extends Component{
                                         </td>
                                         <td>{dish.food.label}</td>
                                         <td>{dish.food.category}</td>
+                                        <td>{this.computeFoodLabel(dish.food.nutrients)}</td>
                                         <td>{dish.food.nutrients.ENERC_KCAL}</td>
                                     </tr> 
                                 );
@@ -71,7 +125,7 @@ class RenderList extends Component{
                                                 alt={recipe.recipe.label} />
                                         </td>
                                         <td>{recipe.recipe.label}</td>
-                                        <td>{recipe.recipe.dietLabels[0]}</td>
+                                        <td>{this.computeRecipeLabel(recipe.recipe.totalNutrients)}</td>
                                         <td>{recipe.recipe.yield}</td>
                                         <td>{recipe.recipe.calories}</td>
                                     </tr> 
