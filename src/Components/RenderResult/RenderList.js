@@ -63,21 +63,6 @@ class RenderList extends Component{
         );
     }
 
-    calcRatio = (nutrients) => {
-        return nutrients.PROCNT.quantity / (nutrients.PROCNT.quantity + nutrients.CHOCDF.quantity + nutrients.FAT.quantity)
-    }
-
-    filterRecipe = () => {
-        const {recipeResults} = this.state;
-        
-        if(this.state.highProtien){
-            recipeResults.filter(recipe => {
-                return this.calcRatio(recipe.recipe.totalNutrients) > 0.15
-            })
-        }
-
-    }
-
     renderFood = () => { 
         const { foodResults } = this.props;
         console.log(foodResults);
