@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Search.scss';
 import axios from 'axios';
 import RenderList from '../RenderList';
+import Loader from '../loader.gif';
 
 class Search extends Component{
     constructor(props){
@@ -76,19 +77,31 @@ class Search extends Component{
 
     handleOnInputChange = (event) => {
         const query = event.target.value;
-        this.setState({
-            query: query,
-            foodLoading: true,
-            recipeLoading: true,
-            foodMessage: '',
-            recipeMessage: ''            
-        }, () => {
-            this.fetchSearch(query);
-        })
+        if(! query ){
+            this.setState({ query, recipeResults: {}, foodResults: {}, foodMessage: '', recipeMessage:''})
+        }else{
+            this.setState({
+                query: query,
+                foodLoading: true,
+                recipeLoading: true,
+                foodMessage: '',
+                recipeMessage: ''            
+            }, () => {
+                this.fetchSearch(query);
+            })
+        }
+    }
+
+    renderFood = () => {
+        const {foodResults, recipeResults} = this.state;
+        console.log(foodResults);
+        return (
+            <RenderList foodResults={foodResults}  recipeResults={recipeResults} />
+        );
     }
     
     render() {
-        const { query } = this.state;
+        const { query, foodLoading, recipeLoading, foodMessage, recipeMessage } = this.state;
         return (
             <div className="search">
                 <div className="container">
@@ -97,13 +110,20 @@ class Search extends Component{
                             type="text"
                             value={query}
                             name="query"
-                            id="search-input"
+                            id="search-input"   
                             placeholder="Search..."
                             onChange={this.handleOnInputChange}
                         />
-                        <i className="fa fa-search search-icon" aria-hidden="true" />
+                        <i className="fa fa-search search-icon" 
+                            aria-hidden="true" 
+                        />
                     </label>
-                    <RenderList food={this.state.foodResults} recipe={this.state.recipeResults} />
+
+                    {/* Loader */}
+                    <img src={Loader} className={`search-loading ${(foodLoading && recipeLoading) ? 'show' : 'hide'}`}
+                        alt="Loading..."
+                    />
+                    {this.renderFood()}
                 </div>
             </div>
         );
