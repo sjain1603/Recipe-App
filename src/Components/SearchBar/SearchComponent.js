@@ -21,8 +21,8 @@ class Search extends Component{
 
     fetchSearch = ( query ) => {
         var encodedQuery = query.replace(/ /g, '%20')
-        const searchUrlFood = `/api/food-database/v2/parser?ingr=${encodedQuery}&app_id=a58bfb02&app_key=11eb9e8426423c4875ebf3bcbc8b5598`
-        const searchUrlRecipe = `/search?q=${encodedQuery}&app_id=1b3918e6&app_key=775943135184647352497ef27fdeb1bd`;
+        const searchUrlFood = `https://api.edamam.com/api/food-database/v2/parser?ingr=${encodedQuery}&app_id=a58bfb02&app_key=11eb9e8426423c4875ebf3bcbc8b5598`
+        const searchUrlRecipe = `https://api.edamam.com/search?q=${encodedQuery}&app_id=1b3918e6&app_key=775943135184647352497ef27fdeb1bd`;
         if(this.cancel) {
             this.cancel.cancel();
         }
